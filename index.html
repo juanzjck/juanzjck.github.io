@@ -1,247 +1,298 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Portfolio</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Juan Pablo Salazar Zúñiga – Portfolio</title>
 
+  <!-- Tailwind (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+  <style>
+    /* Smooth scrolling */
+    html { scroll-behavior: smooth; }
+
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .transition-all, .transition { transition: none !important; }
+      .will-animate { opacity: 1 !important; transform: none !important; }
+    }
+
+    /* Keyframes */
+    @keyframes fade-up { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+    /* Scroll reveal base */
+    .will-animate { opacity: 0; transform: translateY(24px); }
+    .animate-in { animation: fade-up 700ms cubic-bezier(.22,1,.36,1) both; }
+    .animate-in-slow { animation: fade-up 900ms cubic-bezier(.22,1,.36,1) both; }
+
+    /* Anchor offset for sticky header */
+    .anchor-offset { scroll-margin-top: 84px; }
+  </style>
 </head>
-<body class="bg-gray-100 text-gray-800">
-    <!-- Header Section -->
-    <header class="bg-white shadow-md">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div>
-                <h1 class="text-2xl font-bold">Juan Pablo Salazar Zúñiga</h1>
-                <p>Software Engineer | Front-end | Angular | Back-end | Node & Express</p>
-            </div>
-           
-            <nav>
-                <a href="#about" class="text-gray-800 hover:text-blue-500 mx-3">About</a>
-                <a href="#workCases" class="text-gray-800 hover:text-blue-500 mx-3">Work cases</a>
-                <a href="#projects" class="text-gray-800 hover:text-blue-500 mx-3">Projects</a>
-                <a href="#contact" class="text-gray-800 hover:text-blue-500 mx-3">Contact</a>
-            </nav>
+<body class="bg-gray-50 text-gray-800 antialiased selection:bg-blue-200/60">
+  <!-- Header -->
+  <header id="siteHeader" class="sticky top-0 z-50 backdrop-blur bg-white/80 border-b border-gray-200 supports-[backdrop-filter]:bg-white/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex h-16 items-center justify-between">
+        <a href="#home" class="flex items-center gap-3 group">
+          <div class="h-9 w-9 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-400 grid place-items-center text-white font-bold">JP</div>
+          <div>
+            <h1 class="text-base sm:text-lg font-semibold leading-none group-hover:text-blue-600 transition-colors">Juan Pablo Salazar Zúñiga</h1>
+            <p class="text-xs sm:text-sm text-gray-600">Software Engineer · Front‑end · Angular · Node/Express</p>
+          </div>
+        </a>
+
+        <!-- Desktop nav -->
+        <nav class="hidden md:flex items-center gap-1">
+          <a class="px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors" href="#about">About</a>
+          <a class="px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors" href="#workCases">Work cases</a>
+          <a class="px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors" href="#projects">Projects</a>
+          <a class="px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors" href="#contact">Contact</a>
+        </nav>
+
+        <!-- Mobile nav button -->
+        <button id="menuBtn" class="md:hidden inline-flex items-center justify-center h-10 w-10 rounded-lg border border-gray-200 hover:border-gray-300 hover:bg-gray-100 transition">
+          <span class="sr-only">Open navigation</span>
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobileMenu" class="md:hidden max-h-0 overflow-hidden transition-[max-height] duration-300 ease-in-out">
+      <nav class="px-4 pb-4 space-y-1">
+        <a class="block px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors" href="#about">About</a>
+        <a class="block px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors" href="#workCases">Work cases</a>
+        <a class="block px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors" href="#projects">Projects</a>
+        <a class="block px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors" href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section id="home" class="relative isolate overflow-hidden">
+    <div class="absolute inset-0 -z-10 bg-gradient-to-b from-blue-600 via-blue-500 to-blue-400"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 text-center text-white">
+      <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight will-animate">Hello, I'm Juan Pablo</h2>
+      <p class="mt-4 max-w-2xl mx-auto text-base sm:text-lg/relaxed text-blue-100 will-animate">A passionate software engineer specializing in web development and project management.</p>
+      <div class="mt-8 will-animate">
+        <a href="#projects" class="inline-flex items-center gap-2 bg-white text-blue-600 px-6 py-3 rounded-full font-semibold shadow-sm hover:shadow-md active:scale-[.98] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70">
+          <i class="fas fa-eye"></i> View My Work
+        </a>
+      </div>
+    </div>
+    <!-- decorative shapes -->
+    <div class="pointer-events-none absolute -top-16 right-0 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
+    <div class="pointer-events-none absolute bottom-0 left-0 w-72 h-72 bg-cyan-300/20 rounded-full blur-3xl"></div>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="anchor-offset max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+    <h3 class="text-2xl sm:text-3xl font-bold text-center mb-10 will-animate">About Me</h3>
+    <div class="grid md:grid-cols-2 gap-10 items-center">
+      <div class="will-animate">
+        <img src="profile.jpeg" alt="Profile photo of Juan Pablo" loading="lazy" class="w-full aspect-[4/3] object-cover rounded-2xl shadow-lg ring-1 ring-black/5">
+      </div>
+      <div class="md:pl-2 space-y-4 will-animate">
+        <p>I’m a senior front‑end developer with 5+ years of experience across web, mobile and API development.</p>
+        <p>My main stack: JavaScript, Angular, React, React Native on the front‑end; Express, MongoDB, AWS and Docker on the back‑end/infrastructure. I’m goal‑oriented, curious and determined.</p>
+
+        <div class="pt-4">
+          <h4 class="text-xl font-semibold mb-3">Companies I've Worked For</h4>
+          <ul class="flex flex-wrap items-center gap-6">
+            <li><img src="rappi_logo.jpeg" alt="Rappi" class="h-10 w-auto object-contain" loading="lazy"></li>
+            <li><img src="factuec_logo.jpeg" alt="Factu" class="h-10 w-auto object-contain" loading="lazy"></li>
+            <li><img src="logo_yaesta.png" alt="Yaesta" class="h-10 w-auto object-contain" loading="lazy"></li>
+          </ul>
         </div>
-    </header>
+      </div>
+    </div>
+  </section>
 
-    <!-- Hero Section -->
-    <section class="bg-blue-500 text-white py-20">
-        <div class="container mx-auto px-6 text-center">
-            <h2 class="text-4xl font-bold mb-4">Hello, I'm Juan Pablo Salazar Zúñiga</h2>
-            <p class="text-lg mb-8">A passionate software engineer specializing in web development and project management.</p>
-            <a href="#projects" class="bg-white text-blue-500 py-2 px-6 rounded-full text-lg font-semibold hover:bg-gray-200">View My Work</a>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="container mx-auto px-6 py-20">
-        <h2 class="text-3xl font-bold text-center mb-8">About Me</h2>
-        <div class="flex flex-wrap items-center">
-            <div class="w-full md:w-1/2 mb-8 md:mb-0">
-                <img src="profile.jpeg" alt="Your Profile Photo" class="rounded-lg shadow-lg">
-            </div>
-            <div class="w-full md:w-1/2 md:pl-10">
-                <p class="mb-4">I’m a senior front-end developer with more than 5 years of experience in software development, focusing on the JavaScript stack, web apps, mobile apps, and API development.</p>
-                <p class="mb-4">I have mainly worked with JavaScript, Angular, React, and React Native for the frontend, and Express, MongoDB, AWS, and Docker for the backend and infrastructure. I am goal-oriented, curious, and a determined professional.</p>
-
-                <!-- Company Icons Section -->
-                <div class="mt-8">
-                    <h3 class="text-2xl font-semibold mb-4">Companies I've Worked For:</h3>
-                    <div class="flex flex-wrap items-center justify-start space-x-4">
-                        <!-- Replace the src attribute with the URLs to the actual company logos -->
-                        <img src="rappi_logo.jpeg" alt="Rappi" class="h-12">
-                        <img src="factuec_logo.jpeg" alt="Factu" class="h-12">
-                        <img src="logo_yaesta.png" alt="Yaesta" class="h-12">
-                        <!-- Add more logos as needed -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="workCases" class="bg-gray-100 py-20">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center mb-8">My Work cases</h2>
-            <div class="flex flex-wrap -mx-4">
-                <!-- Project Card -->
-                <div class="w-full md:w-1/3 px-4 mb-8">
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                        <img src="MiTienda.png" alt="Project 1" class="w-full h-56 object-cover">
-                        <div class="p-6">
-                            <h3 class="text-xl font-semibold mb-2">MiTienda</h3>
-                            <p class="text-gray-700 mb-4">As a Front-End Developer at Rappi, I play a key role in developing new features, optimizing performance, and refactoring code to improve maintainability and scalability across the platform. I have had the opportunity to work on a wide range of modules, including the Ads and Sponsorships module, where I contributed to building robust, user-friendly interfaces that empower users to create and manage advertising campaigns. These enhancements have directly contributed to improving user engagement and driving sales growth for our partners.</p>
-                            <a href="https://mitienda.rappi.com.ec/" target="_blank"  class="text-blue-500 hover:underline">View</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- Project Card -->
-                <div class="w-full md:w-1/3 px-4 mb-8">
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                        <img src="factulanding.png" alt="Project 1" class="w-full h-56 object-cover">
-                        <div class="p-6">
-                            <h3 class="text-xl font-semibold mb-2">Factu</h3>
-                            <p class="text-gray-700 mb-4">
-                                At Factu, I took on a dual role as both Project Manager and Developer within a small, agile team. I led the development of a comprehensive billing flow, actively contributing to front-end development by creating intuitive user interfaces and ensuring a seamless user experience for billing and invoicing. As Project Manager, I coordinated the team’s efforts, managed the product roadmap, prioritized features, and aligned our work with business goals, all while ensuring we delivered high-quality solutions on time.
-                            </p>
-                            <a href="https://factu.com.ec/" target="_blank"  class="text-blue-500 hover:underline">View</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- Project Card -->
-                <div class="w-full md:w-1/3 px-4 mb-8">
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                        <img src="logo_yaesta.png" alt="Project 1" class="w-full ">
-                        <div class="p-6">
-                            <h3 class="text-xl font-semibold mb-2">YaEsta.com</h3>
-                            <p class="text-gray-700 mb-4">
-                                At Yaesta.com, I was responsible for developing user interfaces for an e-commerce platform, ensuring a seamless and engaging user experience across all devices. My role involved translating complex requirements into intuitive, responsive, and visually appealing designs that enhance customer engagement and drive conversions. Additionally, I designed compelling images and graphics for social media campaigns, aligning with the brand’s identity to boost online presence and attract more traffic to the platform.
-                            </p>
-                            <a href="https://www.yaesta.com/" target="_blank"  class="text-blue-500 hover:underline">View</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- Project Card -->
-                <div class="w-full md:w-1/3 px-4 mb-8">
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                        <img src="miEncarguito.png" alt="Project 1" class="w-full ">
-                        <div class="p-6">
-                            <h3 class="text-xl font-semibold mb-2">Miencarguito</h3>
-                            <p class="text-gray-700 mb-4">
-                                Encomiendas by Mi Encarguito is a web application designed to facilitate the management of courier and parcel delivery services. The platform offers an intuitive and user-friendly interface that allows users to easily track and manage their shipments, from scheduling pickups to monitoring deliveries in real-time.
-
-                                As a front-end developer for this project, I focused on building a responsive and visually appealing user interface using modern web development technologies. The application provides a seamless experience for both customers and service providers, featuring interactive elements for managing orders, viewing shipment statuses, and accessing delivery details.
-
-                                The Encomiendas platform is optimized for performance and usability, ensuring a fast and efficient experience across all devices. It simplifies the logistics process by providing clear and accessible tools for managing packages, improving both operational efficiency and customer satisfaction.
-                            </p>
-                            <a href="https://encomiendas.miencarguito.com/" target="_blank"  class="text-blue-500 hover:underline">View</a>
-                        </div>
-                    </div>
-                </div>
-
-                  <!-- Project Card -->
-                <div class="w-full md:w-1/3 px-4 mb-8">
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                        <img src="fzSeguros.png" alt="Project 1" class="w-full ">
-                        <div class="p-6">
-                            <h3 class="text-xl font-semibold mb-2">Fz Seguros - web Page</h3>
-                            <p class="text-gray-700 mb-4">
-                                FZ Seguros APS is a comprehensive web platform dedicated to providing information about insurance products and services tailored to meet the diverse needs of its clients. The website features a clean, professional design that effectively communicates the company's commitment to reliability and customer care. Visitors can easily navigate through different sections to learn about various insurance options, including auto, health, home, and life insurance.
-
-                                The platform is designed with a user-centric approach, offering clear and concise information to help users understand the coverage options available and make informed decisions. Key features include an easy-to-use contact form, allowing potential clients to request quotes or further information about insurance policies. Additionally, the website is fully responsive, ensuring an optimal browsing experience across all devices, from desktops to smartphones.
-                                
-                                By focusing on clarity, accessibility, and user engagement, FZ Seguros APS serves as a valuable resource for anyone looking to secure comprehensive and tailored insurance coverage.
-                            </p>
-                            <a href="https://fzseguros-aps.com/" target="_blank"  class="text-blue-500 hover:underline">View</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects" class="bg-gray-100 py-20">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center mb-8">My Projects</h2>
-            <div class="flex flex-wrap -mx-4">
-                <!-- Project Card -->
-                <div class="w-full md:w-1/3 px-4 mb-8">
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                        <img src="WhatTowatch.png" alt="Project 1" class="w-full h-56 object-cover">
-                        <div class="p-6">
-                            <h3 class="text-xl font-semibold mb-2">What To Watch</h3>
-                            <p class="text-gray-700 mb-4">What to Watch is a modern web application built with React, Tailwind CSS, and Vite to help users easily discover new movies to watch based on their preferences. The platform features a clean, minimalist interface powered by React, providing a dynamic and responsive user experience. Tailwind CSS is used to ensure a sleek and consistent design across the app, while Vite offers fast build times and optimized performance. Users can browse and explore a wide range of movies, leveraging intuitive search functionality to filter by title, genre, or other criteria. Each movie listing includes essential details like title, release date, rating, and a brief synopsis, making it easy to choose the perfect film. The combination of these cutting-edge technologies ensures a smooth, efficient, and engaging experience on any device.</p>
-                            <a href="https://what-to-watch-apxnnvxec-juanzjcks-projects.vercel.app/" target="_blank" class="text-blue-500 hover:underline">View Project</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- Repeat for more projects -->
-                <!-- Project Card -->
-                <div class="w-full md:w-1/3 px-4 mb-8">
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                        <img src="PlanScanner.png" alt="Project 1" class="w-full h-56 object-cover">
-                        <div class="p-6">
-                            <h3 class="text-xl font-semibold mb-2">PlantScanner</h3>
-                            <p class="text-gray-700 mb-4">
-                                PlantScanner is an innovative application designed to help users identify plants through image recognition. By simply scanning a photo of a plant, users can instantly receive detailed information about the plant species, including its name, characteristics, and care instructions. The app leverages the power of Azure Cognitive Services for advanced image processing and plant identification, providing accurate and reliable results.
-
-                                The project is built with a robust tech stack that includes React for a seamless and interactive web interface and React Native for a smooth and responsive mobile experience. The backend is powered by Node.js with GraphQL for efficient data querying, allowing for fast and flexible API interactions. Data management is handled using MongoDB, ensuring scalable and secure storage for user data and plant information.
-
-                                Together, these technologies create a powerful and user-friendly platform that allows plant enthusiasts, gardeners, and curious users to explore and learn more about the natural world around them.
-                            </p>
-                            <a href="https://github.com/juanzjck/PlantScanner-admin" target="_blank" class="text-blue-500 hover:underline">View Front Repository</a></br>
-                            <a href="https://github.com/juanzjck/PlantScanner-admin" target="_blank" class="text-blue-500 hover:underline">View Back Repository</a></br>
-                            <a href="https://github.com/juanzjck/PlantScanner-back" target="_blank" class="text-blue-500 hover:underline">View Mobile app Repository</a></br>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Project Card -->
-                <div class="w-full md:w-1/3 px-4 mb-8">
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                        <img src="CoffeCashier.png" alt="Project 1" class="w-full h-56 object-cover">
-                        <div class="p-6">
-                            <h3 class="text-xl font-semibold mb-2">CoffeCashier</h3>
-                            <p class="text-gray-700 mb-4">
-                                Coffee Casher is a web application designed to streamline the order management process for coffee shops and cafes. The platform features a clean and intuitive interface that allows baristas and staff to quickly manage customer orders, track inventory, and process payments. Built with a focus on simplicity and efficiency, the application provides real-time updates on order status, helping to enhance service speed and customer satisfaction.
-
-                                With a responsive design, Coffee Casher ensures a seamless user experience across all devices, from desktop computers to tablets. The app is optimized for performance and usability, making it a practical solution for coffee shop owners looking to improve their daily operations and deliver a better experience to their customers.
-                            </p>
-                            <a href="https://coffee-casher-cafe-zular.vercel.app/" target="_blank" class="text-blue-500 hover:underline">View Project</a>
-                        </div>
-                    </div>
-                </div>
-
-                        <!-- Project Card -->
-                <div class="w-full md:w-1/3 px-4 mb-8">
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                        <img src="product-manager.png" alt="Project 1" class="w-full h-56 object-cover">
-                        <div class="p-6">
-                            <h3 class="text-xl font-semibold mb-2">Products management</h3>
-                            <p class="text-gray-700 mb-4">
-                                Financial Product Manager is a robust web application developed with React to simplify the management of financial products for businesses and financial institutions. The platform provides a user-friendly interface that allows users to add, edit, delete, and list various financial products such as loans, credit cards, investment plans, and insurance policies.
-
-                                The application features a dynamic dashboard where users can view a comprehensive list of all financial products, complete with detailed information such as product type, interest rates, terms, and conditions. With an intuitive form-based system, users can easily add new products, update existing product details, or remove outdated offerings from the inventory. This ensures that the product catalog remains up-to-date and relevant to customers.
-
-                                Financial Product Manager is designed with scalability and performance in mind, providing seamless data handling and real-time updates. The use of React enables a highly interactive and responsive user experience, making it an ideal solution for managing a wide range of financial products efficiently and effectively.
-
-
-                            </p>
-                            <a href="https://github.com/juanzjck/product-management" target="_blank" class="text-blue-500 hover:underline">View Project</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="container mx-auto px-6 py-20">
-        <h2 class="text-3xl font-bold text-center mb-8">Contact Me</h2>
-        
-        <!-- Social Media Links Section -->
-        <div class="flex justify-center mb-8">
-            <a href="https://github.com/juanzjck" target="_blank" class="mx-4 text-gray-800 hover:text-blue-500 text-3xl">
-                <i class="fab fa-github"></i>
+  <!-- Work Cases -->
+  <section id="workCases" class="anchor-offset bg-gray-50 py-16 sm:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h3 class="text-2xl sm:text-3xl font-bold text-center mb-10 will-animate">My Work Cases</h3>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 will-animate">
+        <!-- Card -->
+        <article class="group bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 overflow-hidden transition hover:shadow-lg hover:-translate-y-0.5">
+          <img src="MiTienda.png" alt="MiTienda screenshot" loading="lazy" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h4 class="text-lg font-semibold">MiTienda</h4>
+            <p class="mt-2 text-sm text-gray-600">Front‑end feature development, performance tuning and refactors across Ads & Sponsorships to drive engagement and sales.</p>
+            <a href="https://mitienda.rappi.com.ec/" target="_blank" class="mt-4 inline-flex items-center gap-2 text-blue-600 hover:underline">
+              View <i class="fas fa-external-link-alt text-xs"></i>
             </a>
-            <a href="https://www.linkedin.com/in/juansalazardev" target="_blank" class="mx-4 text-gray-800 hover:text-blue-500 text-3xl">
-                <i class="fab fa-linkedin"></i>
-            </a>
-            <a href="mailto:juanzjck1996@gmail.com" class="mx-4 text-gray-800 hover:text-blue-500 text-3xl">
-                <i class="fas fa-envelope"></i>
-            </a>
-        </div>
+          </div>
+        </article>
 
-    </section>
-    
-    <!-- Footer Section -->
-    <footer class="bg-gray-800 text-white py-6">
-        <div class="container mx-auto px-6 text-center">
-            <p>&copy; 2024 Juan Pablo Salazar Zúñiga. All Rights Reserved.</p>
-        </div>
-    </footer>
+        <article class="group bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 overflow-hidden transition hover:shadow-lg hover:-translate-y-0.5">
+          <img src="factulanding.png" alt="Factu screenshot" loading="lazy" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h4 class="text-lg font-semibold">Factu</h4>
+            <p class="mt-2 text-sm text-gray-600">Project Manager & Developer. Led billing flow, UI/UX, roadmap and delivery aligned to business outcomes.</p>
+            <a href="https://factu.com.ec/" target="_blank" class="mt-4 inline-flex items-center gap-2 text-blue-600 hover:underline">View <i class="fas fa-external-link-alt text-xs"></i></a>
+          </div>
+        </article>
+
+        <article class="group bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 overflow-hidden transition hover:shadow-lg hover:-translate-y-0.5">
+          <img src="logo_yaesta.png" alt="YaEsta logo" loading="lazy" class="w-full h-48 object-contain p-6 bg-gray-50">
+          <div class="p-6">
+            <h4 class="text-lg font-semibold">YaEsta.com</h4>
+            <p class="mt-2 text-sm text-gray-600">E‑commerce UI development. Responsive experiences to improve conversion; social creatives to boost traffic.</p>
+            <a href="https://www.yaesta.com/" target="_blank" class="mt-4 inline-flex items-center gap-2 text-blue-600 hover:underline">View <i class="fas fa-external-link-alt text-xs"></i></a>
+          </div>
+        </article>
+
+        <article class="group bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 overflow-hidden transition hover:shadow-lg hover:-translate-y-0.5">
+          <img src="miEncarguito.png" alt="Mi Encarguito screenshot" loading="lazy" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h4 class="text-lg font-semibold">Mi Encarguito – Encomiendas</h4>
+            <p class="mt-2 text-sm text-gray-600">Courier platform UI with responsive, performant pages to manage orders and real‑time tracking.</p>
+            <a href="https://encomiendas.miencarguito.com/" target="_blank" class="mt-4 inline-flex items-center gap-2 text-blue-600 hover:underline">View <i class="fas fa-external-link-alt text-xs"></i></a>
+          </div>
+        </article>
+
+        <article class="group bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 overflow-hidden transition hover:shadow-lg hover:-translate-y-0.5">
+          <img src="fzSeguros.png" alt="FZ Seguros screenshot" loading="lazy" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h4 class="text-lg font-semibold">FZ Seguros – Website</h4>
+            <p class="mt-2 text-sm text-gray-600">Clean, accessible site to inform users and collect leads; fully responsive and mobile‑first.</p>
+            <a href="https://fzseguros-aps.com/" target="_blank" class="mt-4 inline-flex items-center gap-2 text-blue-600 hover:underline">View <i class="fas fa-external-link-alt text-xs"></i></a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects" class="anchor-offset py-16 sm:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h3 class="text-2xl sm:text-3xl font-bold text-center mb-10 will-animate">My Projects</h3>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 will-animate">
+        <article class="group bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 overflow-hidden transition hover:shadow-lg hover:-translate-y-0.5">
+          <img src="WhatTowatch.png" alt="What To Watch app" loading="lazy" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h4 class="text-lg font-semibold">What To Watch</h4>
+            <p class="mt-2 text-sm text-gray-600">React + Tailwind + Vite app to discover movies by preferences, with search and clean UI.</p>
+            <a href="https://what-to-watch-apxnnvxec-juanzjcks-projects.vercel.app/" target="_blank" class="mt-4 inline-flex items-center gap-2 text-blue-600 hover:underline">View Project <i class="fas fa-external-link-alt text-xs"></i></a>
+          </div>
+        </article>
+
+        <article class="group bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 overflow-hidden transition hover:shadow-lg hover:-translate-y-0.5">
+          <img src="PlanScanner.png" alt="PlantScanner app" loading="lazy" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h4 class="text-lg font-semibold">PlantScanner</h4>
+            <p class="mt-2 text-sm text-gray-600">Azure Cognitive Services + React/React Native + Node GraphQL + MongoDB for plant identification.</p>
+            <div class="mt-3 space-x-3">
+              <a href="https://github.com/juanzjck/PlantScanner-admin" target="_blank" class="text-blue-600 hover:underline">Front repo</a>
+              <a href="https://github.com/juanzjck/PlantScanner-back" target="_blank" class="text-blue-600 hover:underline">Back repo</a>
+              <a href="https://github.com/juanzjck/PlantScanner-admin" target="_blank" class="text-blue-600 hover:underline">Mobile repo</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="group bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 overflow-hidden transition hover:shadow-lg hover:-translate-y-0.5">
+          <img src="CoffeCashier.png" alt="Coffee Cashier app" loading="lazy" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h4 class="text-lg font-semibold">Coffee Cashier</h4>
+            <p class="mt-2 text-sm text-gray-600">Order management UI for cafés, optimized for speed and responsiveness across devices.</p>
+            <a href="https://coffee-casher-cafe-zular.vercel.app/" target="_blank" class="mt-4 inline-flex items-center gap-2 text-blue-600 hover:underline">View Project <i class="fas fa-external-link-alt text-xs"></i></a>
+          </div>
+        </article>
+
+        <article class="group bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 overflow-hidden transition hover:shadow-lg hover:-translate-y-0.5">
+          <img src="product-manager.png" alt="Financial Product Manager app" loading="lazy" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h4 class="text-lg font-semibold">Products management</h4>
+            <p class="mt-2 text-sm text-gray-600">React interface to add/edit/list financial products (loans, cards, investments) with real‑time updates.</p>
+            <a href="https://github.com/juanzjck/product-management" target="_blank" class="mt-4 inline-flex items-center gap-2 text-blue-600 hover:underline">View Project <i class="fas fa-external-link-alt text-xs"></i></a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="anchor-offset max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+    <h3 class="text-2xl sm:text-3xl font-bold text-center mb-8 will-animate">Contact Me</h3>
+    <div class="flex justify-center gap-8 text-3xl will-animate">
+      <a href="https://github.com/juanzjck" target="_blank" class="text-gray-800 hover:text-blue-600 transition-colors" aria-label="GitHub"><i class="fab fa-github"></i></a>
+      <a href="https://www.linkedin.com/in/juansalazardev" target="_blank" class="text-gray-800 hover:text-blue-600 transition-colors" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+      <a href="mailto:juanzjck1996@gmail.com" class="text-gray-800 hover:text-blue-600 transition-colors" aria-label="Email"><i class="fas fa-envelope"></i></a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <p>&copy; <span id="year"></span> Juan Pablo Salazar Zúñiga. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Back to top -->
+  <button id="toTop" class="fixed bottom-6 right-6 h-11 w-11 rounded-full bg-blue-600 text-white shadow-lg grid place-items-center opacity-0 pointer-events-none transition hover:bg-blue-700" aria-label="Back to top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <script>
+    // Set year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Mobile menu
+    const btn = document.getElementById('menuBtn');
+    const menu = document.getElementById('mobileMenu');
+    btn?.addEventListener('click', () => {
+      const open = menu.style.maxHeight && menu.style.maxHeight !== '0px';
+      menu.style.maxHeight = open ? '0px' : menu.scrollHeight + 'px';
+    });
+
+    // Close mobile menu on link click
+    menu?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      menu.style.maxHeight = '0px';
+    }));
+
+    // Scroll reveal
+    const io = ('IntersectionObserver' in window) ? new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('animate-in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 }) : null;
+
+    document.querySelectorAll('.will-animate').forEach(el => {
+      if (io) io.observe(el); else el.classList.add('animate-in');
+    });
+
+    // Back to top visibility
+    const toTop = document.getElementById('toTop');
+    const toggleTopBtn = () => {
+      if (window.scrollY > 400) {
+        toTop.classList.remove('pointer-events-none');
+        toTop.style.opacity = '1';
+      } else {
+        toTop.classList.add('pointer-events-none');
+        toTop.style.opacity = '0';
+      }
+    };
+    window.addEventListener('scroll', toggleTopBtn, { passive: true });
+    toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    // Header shadow on scroll
+    const header = document.getElementById('siteHeader');
+    let lastY = 0;
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      header.classList.toggle('shadow', y > 4);
+      lastY = y;
+    }, { passive: true });
+  </script>
 </body>
 </html>
