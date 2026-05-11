@@ -3,296 +3,962 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Juan Pablo Salazar Zúñiga – Portfolio</title>
+  <title>Juan Pablo Salazar – Founding Engineer</title>
 
-  <!-- Tailwind (CDN) -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Font Awesome -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
   <style>
-    /* Smooth scrolling */
     html { scroll-behavior: smooth; }
 
-    /* Respect reduced motion */
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
-      .transition-all, .transition { transition: none !important; }
-      .will-animate { opacity: 1 !important; transform: none !important; }
+      *, *::before, *::after { animation: none !important; transition: none !important; }
     }
 
-    /* Keyframes */
-    @keyframes fade-up { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(32px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slide-in-left {
+      from { opacity: 0; transform: translateX(-40px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes slide-in-right {
+      from { opacity: 0; transform: translateX(40px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes shimmer {
+      0%   { background-position: -200% center; }
+      100% { background-position:  200% center; }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-18px); }
+    }
+    @keyframes pulse-ring {
+      0%   { box-shadow: 0 0 0 0   rgba(99,102,241,.45); }
+      70%  { box-shadow: 0 0 0 18px rgba(99,102,241,0);  }
+      100% { box-shadow: 0 0 0 0   rgba(99,102,241,0);   }
+    }
+    @keyframes gradient-shift {
+      0%   { background-position: 0%   50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0%   50%; }
+    }
+    @keyframes blob {
+      0%   { transform: translate(0,0)    scale(1);   }
+      33%  { transform: translate(30px,-50px) scale(1.1); }
+      66%  { transform: translate(-20px,20px) scale(.9); }
+      100% { transform: translate(0,0)    scale(1);   }
+    }
+    @keyframes cursor-blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
+    @keyframes bounce-down {
+      0%, 100% { transform: translateY(0);   }
+      50%       { transform: translateY(6px); }
+    }
 
-    /* Scroll reveal base */
-    .will-animate { opacity: 0; transform: translateY(24px); }
-    .animate-in { animation: fade-up 700ms cubic-bezier(.22,1,.36,1) both; }
-    .animate-in-slow { animation: fade-up 900ms cubic-bezier(.22,1,.36,1) both; }
+    /* ─── Scroll reveal ─── */
+    .will-animate { opacity: 0; transform: translateY(32px); }
+    .animate-in   { animation: fade-up 700ms cubic-bezier(.22,1,.36,1) both; }
 
-    /* Anchor offset for sticky header */
-    .anchor-offset { scroll-margin-top: 84px; }
+    /* ─── Hero gradient ─── */
+    .hero-bg {
+      background: linear-gradient(-45deg, #0f0c29, #302b63, #1d4ed8, #0891b2);
+      background-size: 400% 400%;
+      animation: gradient-shift 14s ease infinite;
+    }
+
+    /* ─── Blobs ─── */
+    .blob { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; animation: blob 9s ease-in-out infinite; }
+    .blob-b { animation-delay: -4.5s; animation-duration: 11s; }
+    .blob-c { animation-delay: -2s;   animation-duration: 7s; }
+
+    /* ─── Avatar pulse ─── */
+    .avatar-pulse { animation: pulse-ring 2.5s cubic-bezier(.455,.03,.515,.955) infinite; }
+
+    /* ─── Typewriter cursor ─── */
+    .cursor {
+      display: inline-block;
+      width: 3px; height: 1.15em;
+      background: currentColor;
+      vertical-align: text-bottom;
+      margin-left: 2px;
+      animation: cursor-blink .7s ease-in-out infinite;
+    }
+
+    /* ─── Anchor offset ─── */
+    .anchor-offset { scroll-margin-top: 80px; }
+
+    /* ─── Card hover ─── */
+    .card-hover { transition: transform 280ms ease, box-shadow 280ms ease; }
+    .card-hover:hover { transform: translateY(-6px); box-shadow: 0 24px 48px -12px rgba(0,0,0,.16); }
+
+    /* ─── Tech badge ─── */
+    .tech-badge { transition: transform 200ms ease, box-shadow 200ms ease; }
+    .tech-badge:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 8px 20px -6px rgba(0,0,0,.25); }
+
+    /* ─── Stagger delays ─── */
+    .stagger-1 { animation-delay: 80ms;  }
+    .stagger-2 { animation-delay: 180ms; }
+    .stagger-3 { animation-delay: 280ms; }
+    .stagger-4 { animation-delay: 380ms; }
+    .stagger-5 { animation-delay: 480ms; }
+
+    /* ─── Nav underline ─── */
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 0; height: 2px; background: #3b82f6;
+      transition: width 280ms ease;
+    }
+    .nav-link:hover::after { width: 100%; }
+
+    /* ─── Scroll bounce ─── */
+    .bounce-down { animation: bounce-down 1.4s ease-in-out infinite; }
+
+    /* ─── Float ─── */
+    .float-anim { animation: float 6s ease-in-out infinite; }
+
+    /* ─── Marquee ─── */
+    @keyframes marquee-left  { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    @keyframes marquee-right { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+    .marquee-track { display: flex; width: max-content; }
+    .marquee-left  { animation: marquee-left  28s linear infinite; }
+    .marquee-right { animation: marquee-right 28s linear infinite; }
+    .marquee-wrap  { overflow: hidden; -webkit-mask: linear-gradient(90deg, transparent, black 12%, black 88%, transparent); mask: linear-gradient(90deg, transparent, black 12%, black 88%, transparent); }
+
+    /* ─── About directional reveals ─── */
+    .will-animate-left  { opacity: 0; transform: translateX(-40px); }
+    .will-animate-right { opacity: 0; transform: translateX(40px);  }
+    .animate-left  { animation: slide-in-left  750ms cubic-bezier(.22,1,.36,1) both; }
+    .animate-right { animation: slide-in-right 750ms cubic-bezier(.22,1,.36,1) both; }
+
+    /* ─── About photo shimmer border ─── */
+    .photo-shimmer {
+      position: relative;
+    }
+    .photo-shimmer::after {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 1.5rem;
+      background: linear-gradient(90deg, transparent 0%, rgba(99,102,241,.6) 40%, rgba(34,211,238,.6) 60%, transparent 100%);
+      background-size: 200% 100%;
+      animation: shimmer 3s linear infinite;
+      z-index: -1;
+    }
   </style>
 </head>
-<body class="bg-gray-50 text-gray-800 antialiased selection:bg-blue-200/60">
-  <!-- Header -->
-  <header id="siteHeader" class="sticky top-0 z-50 backdrop-blur bg-white/80 border-b border-gray-200 supports-[backdrop-filter]:bg-white/60">
+<body class="bg-gray-50 text-gray-800 antialiased selection:bg-indigo-200/60">
+
+  <!-- ══════════════════════════════════════════
+       HEADER
+  ══════════════════════════════════════════ -->
+  <header id="siteHeader" class="sticky top-0 z-50 backdrop-blur bg-white/80 border-b border-gray-200 transition-shadow duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex h-16 items-center justify-between">
+
         <a href="#home" class="flex items-center gap-3 group">
-          <div class="h-9 w-9 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-400 grid place-items-center text-white font-bold">JP</div>
+          <div class="h-9 w-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-cyan-400 grid place-items-center text-white font-bold text-sm shadow-md">JP</div>
           <div>
-            <h1 class="text-base sm:text-lg font-semibold leading-none group-hover:text-blue-600 transition-colors">Juan Pablo Salazar Zúñiga</h1>
-            <p class="text-xs sm:text-sm text-gray-600">Software Engineer · Front‑end · Angular · Node/Express</p>
+            <p class="text-base font-semibold leading-none group-hover:text-indigo-600 transition-colors">Juan Pablo Salazar</p>
+            <p class="text-xs text-gray-500 mt-0.5">Founding Engineer · New York, NY</p>
           </div>
         </a>
 
-        <!-- Desktop nav -->
         <nav class="hidden md:flex items-center gap-1">
-          <a class="px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors" href="#about">About</a>
-          <a class="px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors" href="#workCases">Work cases</a>
-          <a class="px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors" href="#projects">Projects</a>
-          <a class="px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors" href="#contact">Contact</a>
+          <a class="nav-link px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition-colors" href="#about">About</a>
+          <a class="nav-link px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition-colors" href="#stack">Stack</a>
+          <a class="nav-link px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition-colors" href="#workCases">Work</a>
+          <a class="nav-link px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition-colors" href="#projects">Projects</a>
+          <a class="nav-link px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition-colors" href="#education">Education</a>
+          <a class="nav-link px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition-colors" href="#blog">Blog</a>
+          <a class="ml-2 px-4 py-2 rounded-full bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 transition-colors shadow-sm" href="#contact">Contact</a>
         </nav>
 
-        <!-- Mobile nav button -->
-        <button id="menuBtn" class="md:hidden inline-flex items-center justify-center h-10 w-10 rounded-lg border border-gray-200 hover:border-gray-300 hover:bg-gray-100 transition">
-          <span class="sr-only">Open navigation</span>
-          <i class="fas fa-bars"></i>
+        <button id="menuBtn" class="md:hidden inline-flex items-center justify-center h-10 w-10 rounded-lg border border-gray-200 hover:bg-gray-100 transition">
+          <span class="sr-only">Open menu</span>
+          <i class="fa-solid fa-bars"></i>
         </button>
       </div>
     </div>
 
-    <!-- Mobile menu -->
     <div id="mobileMenu" class="md:hidden max-h-0 overflow-hidden transition-[max-height] duration-300 ease-in-out">
       <nav class="px-4 pb-4 space-y-1">
-        <a class="block px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors" href="#about">About</a>
-        <a class="block px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors" href="#workCases">Work cases</a>
-        <a class="block px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors" href="#projects">Projects</a>
-        <a class="block px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors" href="#contact">Contact</a>
+        <a class="block px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50" href="#about">About</a>
+        <a class="block px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50" href="#stack">Stack</a>
+        <a class="block px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50" href="#workCases">Work</a>
+        <a class="block px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50" href="#projects">Projects</a>
+        <a class="block px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50" href="#education">Education</a>
+        <a class="block px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50" href="#blog">Blog</a>
+        <a class="block px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50" href="#contact">Contact</a>
       </nav>
     </div>
   </header>
 
-  <!-- Hero -->
-  <section id="home" class="relative isolate overflow-hidden">
-    <div class="absolute inset-0 -z-10 bg-gradient-to-b from-blue-600 via-blue-500 to-blue-400"></div>
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 text-center text-white">
-      <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight will-animate">Hello, I'm Juan Pablo</h2>
-      <p class="mt-4 max-w-2xl mx-auto text-base sm:text-lg/relaxed text-blue-100 will-animate">A passionate software engineer specializing in web development and project management.</p>
-      <div class="mt-8 will-animate">
-        <a href="#projects" class="inline-flex items-center gap-2 bg-white text-blue-600 px-6 py-3 rounded-full font-semibold shadow-sm hover:shadow-md active:scale-[.98] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70">
-          <i class="fas fa-eye"></i> View My Work
+
+  <!-- ══════════════════════════════════════════
+       HERO
+  ══════════════════════════════════════════ -->
+  <section id="home" class="relative isolate overflow-hidden hero-bg min-h-[92vh] flex items-center">
+    <!-- Animated blobs -->
+    <div class="blob pointer-events-none absolute top-1/4 right-1/4 w-72 h-72 bg-indigo-500/20 blur-3xl"></div>
+    <div class="blob blob-b pointer-events-none absolute bottom-1/4 left-1/4 w-96 h-96 bg-cyan-400/15 blur-3xl"></div>
+    <div class="blob blob-c pointer-events-none absolute top-1/2 left-1/2 w-64 h-64 bg-violet-500/15 blur-3xl"></div>
+    <!-- Dot grid -->
+    <div class="pointer-events-none absolute inset-0" style="background-image:radial-gradient(circle,rgba(255,255,255,.07) 1px,transparent 1px);background-size:32px 32px;"></div>
+
+    <div class="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center text-white">
+      <!-- Avatar -->
+      <div class="mb-8 flex justify-center will-animate">
+        <div class="avatar-pulse h-28 w-28 rounded-2xl overflow-hidden ring-4 ring-white/20 shadow-2xl">
+          <img src="profile.jpeg" alt="Juan Pablo Salazar" class="h-full w-full object-cover">
+        </div>
+      </div>
+
+      <!-- Name -->
+      <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight will-animate">
+        Juan Pablo Salazar Zúñiga
+      </h1>
+
+      <!-- Typewriter -->
+      <p class="mt-4 text-xl sm:text-2xl font-medium text-blue-100 will-animate h-8">
+        <span id="typewriter-text"></span><span class="cursor"></span>
+      </p>
+
+      <!-- Location -->
+      <div class="mt-4 flex justify-center will-animate">
+        <span class="inline-flex items-center gap-2 bg-white/10 backdrop-blur rounded-full px-4 py-1.5 text-sm text-blue-100 border border-white/20">
+          <i class="fa-solid fa-location-dot text-cyan-400"></i> New York, NY &nbsp;·&nbsp; Open to opportunities
+        </span>
+      </div>
+
+      <!-- Stats -->
+      <div class="mt-10 flex flex-wrap justify-center gap-6 sm:gap-14 will-animate">
+        <div class="text-center">
+          <p class="text-4xl font-extrabold tabular-nums counter" data-target="8">0</p>
+          <p class="text-xs text-blue-200 mt-1 uppercase tracking-widest">Years<br>Experience</p>
+        </div>
+        <div class="w-px bg-white/20 hidden sm:block self-stretch"></div>
+        <div class="text-center">
+          <p class="text-4xl font-extrabold tabular-nums counter" data-target="10">0</p>
+          <p class="text-xs text-blue-200 mt-1 uppercase tracking-widest">Projects<br>Delivered</p>
+        </div>
+        <div class="w-px bg-white/20 hidden sm:block self-stretch"></div>
+        <div class="text-center">
+          <p class="text-4xl font-extrabold tabular-nums counter" data-target="3">0</p>
+          <p class="text-xs text-blue-200 mt-1 uppercase tracking-widest">Companies<br>Worked</p>
+        </div>
+        <div class="w-px bg-white/20 hidden sm:block self-stretch"></div>
+        <div class="text-center">
+          <p class="text-4xl font-extrabold tabular-nums counter" data-target="2">0</p>
+          <p class="text-xs text-blue-200 mt-1 uppercase tracking-widest">Languages<br>Spoken</p>
+        </div>
+      </div>
+
+      <!-- CTAs -->
+      <div class="mt-10 flex flex-wrap justify-center gap-4 will-animate">
+        <a href="#projects" class="inline-flex items-center gap-2 bg-white text-indigo-700 px-6 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:scale-[.98] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70">
+          <i class="fa-solid fa-eye"></i> View My Work
+        </a>
+        <a href="#contact" class="inline-flex items-center gap-2 border-2 border-white/60 text-white px-6 py-3 rounded-full font-semibold hover:bg-white/10 hover:-translate-y-0.5 active:scale-[.98] transition">
+          <i class="fa-solid fa-paper-plane"></i> Get in Touch
         </a>
       </div>
     </div>
-    <!-- decorative shapes -->
-    <div class="pointer-events-none absolute -top-16 right-0 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
-    <div class="pointer-events-none absolute bottom-0 left-0 w-72 h-72 bg-cyan-300/20 rounded-full blur-3xl"></div>
+
+    <!-- Scroll hint -->
+    <div class="bounce-down absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-white/40 text-xs">
+      scroll <i class="fa-solid fa-chevron-down"></i>
+    </div>
   </section>
 
-  <!-- About -->
-  <section id="about" class="anchor-offset max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
-    <h3 class="text-2xl sm:text-3xl font-bold text-center mb-10 will-animate">About Me</h3>
-    <div class="grid md:grid-cols-2 gap-10 items-center">
-      <div class="will-animate">
-        <img src="profile.jpeg" alt="Profile photo of Juan Pablo" loading="lazy" class="w-full aspect-[4/3] object-cover rounded-2xl shadow-lg ring-1 ring-black/5">
-      </div>
-      <div class="md:pl-2 space-y-4 will-animate">
-        <p>I’m a senior front‑end developer with 5+ years of experience across web, mobile and API development.</p>
-        <p>My main stack: JavaScript, Angular, React, React Native on the front‑end; Express, MongoDB, AWS and Docker on the back‑end/infrastructure. I’m goal‑oriented, curious and determined.</p>
 
-        <div class="pt-4">
-          <h4 class="text-xl font-semibold mb-3">Companies I've Worked For</h4>
+  <!-- ══════════════════════════════════════════
+       ABOUT
+  ══════════════════════════════════════════ -->
+  <section id="about" class="anchor-offset max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+    <h2 class="text-2xl sm:text-3xl font-bold text-center mb-10 will-animate">About Me</h2>
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+
+      <div class="float-anim will-animate-left photo-shimmer">
+        <img src="profile.jpeg" alt="Juan Pablo Salazar" loading="lazy"
+             class="w-full aspect-[4/3] object-cover rounded-3xl shadow-xl ring-1 ring-black/5">
+      </div>
+
+      <div class="space-y-5 will-animate-right">
+        <!-- "Currently at" badge -->
+        <span class="inline-flex items-center gap-2 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full px-4 py-1.5 text-sm font-medium">
+          <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          Currently · Touro University, Graduate School of Technology
+        </span>
+
+        <p class="text-gray-700 leading-relaxed">
+          I'm a <strong>Founding Engineer with 8+ years of experience</strong> building scalable web and mobile applications. Based in <strong>New York, NY</strong>, I specialize in taking products from zero to production — across full-stack and mobile.
+        </p>
+        <p class="text-gray-700 leading-relaxed">
+          Core stack: <strong>Angular, React, React Native</strong> on the frontend; <strong>Node.js, Express, GraphQL, MongoDB, AWS and Docker</strong> on the backend. I've led teams, owned roadmaps, and shipped products reaching thousands of users across Latin America.
+        </p>
+        <p class="text-gray-700 leading-relaxed">
+          Goal-oriented, curious, and determined — equally at home building features end-to-end, mentoring engineers, or aligning stakeholders on strategy.
+        </p>
+
+        <div class="pt-2">
+          <p class="text-sm font-semibold text-gray-900 mb-4">Companies I've Worked For</p>
           <ul class="flex flex-wrap items-center gap-6">
-            <li><img src="rappi_logo.jpeg" alt="Rappi" class="h-10 w-auto object-contain" loading="lazy"></li>
-            <li><img src="factuec_logo.jpeg" alt="Factu" class="h-10 w-auto object-contain" loading="lazy"></li>
-            <li><img src="logo_yaesta.png" alt="Yaesta" class="h-10 w-auto object-contain" loading="lazy"></li>
+            <li><img src="rappi_logo.jpeg" alt="Rappi"  class="h-10 w-auto object-contain grayscale hover:grayscale-0 transition duration-300" loading="lazy"></li>
+            <li><img src="factuec_logo.jpeg" alt="Factu" class="h-10 w-auto object-contain grayscale hover:grayscale-0 transition duration-300" loading="lazy"></li>
+            <li><img src="logo_yaesta.png" alt="Yaesta" class="h-10 w-auto object-contain grayscale hover:grayscale-0 transition duration-300" loading="lazy"></li>
+            <li>
+              <span class="inline-flex items-center h-10 px-3 rounded-lg bg-gray-100 hover:bg-red-600 text-gray-700 hover:text-white font-bold text-sm tracking-tight transition duration-300 select-none">
+                NTT DATA
+              </span>
+            </li>
           </ul>
         </div>
       </div>
     </div>
+
+    <!-- Marquee strips -->
+    <div class="mt-16 space-y-4 will-animate">
+      <!-- Row 1: Tech — scrolls left -->
+      <div class="marquee-wrap">
+        <div class="marquee-track marquee-left gap-3">
+          <!-- set A -->
+          <span class="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium text-gray-700 shadow-sm mx-1.5"><i class="fa-brands fa-angular text-red-500"></i> Angular</span>
+          <span class="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium text-gray-700 shadow-sm mx-1.5"><i class="fa-brands fa-react text-cyan-500"></i> React</span>
+          <span class="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium text-gray-700 shadow-sm mx-1.5"><i class="fa-brands fa-react text-cyan-400"></i> React Native</span>
+          <span class="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium text-gray-700 shadow-sm mx-1.5"><i class="fa-brands fa-node-js text-green-600"></i> Node.js</span>
+          <span class="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium text-gray-700 shadow-sm mx-1.5"><i class="fa-brands fa-docker text-sky-500"></i> Docker</span>
+          <span class="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium text-gray-700 shadow-sm mx-1.5"><i class="fa-brands fa-aws text-orange-500"></i> AWS</span>
+          <span class="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium text-gray-700 shadow-sm mx-1.5"><i class="fa-brands fa-js text-yellow-500"></i> TypeScript</span>
+          <span class="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium text-gray-700 shadow-sm mx-1.5"><i class="fa-solid fa-diagram-project text-pink-500"></i> GraphQL</span>
+          <span class="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium text-gray-700 shadow-sm mx-1.5"><i class="fa-solid fa-leaf text-green-500"></i> MongoDB</span>
+          <span class="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium text-gray-700 shadow-sm mx-1.5"><i class="fa-solid fa-wind text-teal-500"></i> Tailwind</span>
+          <span class="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium text-gray-700 shadow-sm mx-1.5"><i class="fa-solid fa-mobile-screen text-purple-500"></i> Expo</span>
+          <span class="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium text-gray-700 shadow-sm mx-1.5"><i class="fa-solid fa-brain text-indigo-500"></i> Claude AI</span>
+          <!-- set B (duplicate for seamless loop) -->
+          <span class="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium text-gray-700 shadow-sm mx-1.5"><i class="fa-brands fa-angular text-red-500"></i> Angular</span>
+          <span class="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium text-gray-700 shadow-sm mx-1.5"><i class="fa-brands fa-react text-cyan-500"></i> React</span>
+          <span class="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium text-gray-700 shadow-sm mx-1.5"><i class="fa-brands fa-react text-cyan-400"></i> React Native</span>
+          <span class="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium text-gray-700 shadow-sm mx-1.5"><i class="fa-brands fa-node-js text-green-600"></i> Node.js</span>
+          <span class="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium text-gray-700 shadow-sm mx-1.5"><i class="fa-brands fa-docker text-sky-500"></i> Docker</span>
+          <span class="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium text-gray-700 shadow-sm mx-1.5"><i class="fa-brands fa-aws text-orange-500"></i> AWS</span>
+          <span class="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium text-gray-700 shadow-sm mx-1.5"><i class="fa-brands fa-js text-yellow-500"></i> TypeScript</span>
+          <span class="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium text-gray-700 shadow-sm mx-1.5"><i class="fa-solid fa-diagram-project text-pink-500"></i> GraphQL</span>
+          <span class="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium text-gray-700 shadow-sm mx-1.5"><i class="fa-solid fa-leaf text-green-500"></i> MongoDB</span>
+          <span class="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium text-gray-700 shadow-sm mx-1.5"><i class="fa-solid fa-wind text-teal-500"></i> Tailwind</span>
+          <span class="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium text-gray-700 shadow-sm mx-1.5"><i class="fa-solid fa-mobile-screen text-purple-500"></i> Expo</span>
+          <span class="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium text-gray-700 shadow-sm mx-1.5"><i class="fa-solid fa-brain text-indigo-500"></i> Claude AI</span>
+        </div>
+      </div>
+
+      <!-- Row 2: Projects — scrolls right -->
+      <div class="marquee-wrap">
+        <div class="marquee-track marquee-right gap-3">
+          <!-- set A -->
+          <span class="inline-flex items-center gap-2 bg-indigo-600 text-white rounded-full px-4 py-2 text-sm font-medium shadow-sm mx-1.5"><i class="fa-solid fa-handshake"></i> PartGram</span>
+          <span class="inline-flex items-center gap-2 bg-orange-500 text-white rounded-full px-4 py-2 text-sm font-medium shadow-sm mx-1.5"><i class="fa-solid fa-store"></i> MiTienda · Rappi</span>
+          <span class="inline-flex items-center gap-2 bg-blue-600 text-white rounded-full px-4 py-2 text-sm font-medium shadow-sm mx-1.5"><i class="fa-solid fa-file-invoice"></i> Factu</span>
+          <span class="inline-flex items-center gap-2 bg-emerald-600 text-white rounded-full px-4 py-2 text-sm font-medium shadow-sm mx-1.5"><i class="fa-solid fa-cart-shopping"></i> YaEsta</span>
+          <span class="inline-flex items-center gap-2 bg-purple-600 text-white rounded-full px-4 py-2 text-sm font-medium shadow-sm mx-1.5"><i class="fa-solid fa-cash-register"></i> CajaSmart</span>
+          <span class="inline-flex items-center gap-2 bg-red-800 text-white rounded-full px-4 py-2 text-sm font-medium shadow-sm mx-1.5"><i class="fa-solid fa-fire"></i> Infernal Retribution</span>
+          <span class="inline-flex items-center gap-2 bg-cyan-600 text-white rounded-full px-4 py-2 text-sm font-medium shadow-sm mx-1.5"><i class="fa-solid fa-seedling"></i> PlantScanner</span>
+          <span class="inline-flex items-center gap-2 bg-amber-600 text-white rounded-full px-4 py-2 text-sm font-medium shadow-sm mx-1.5"><i class="fa-solid fa-mug-hot"></i> Coffee Cashier</span>
+          <span class="inline-flex items-center gap-2 bg-gray-700 text-white rounded-full px-4 py-2 text-sm font-medium shadow-sm mx-1.5"><i class="fa-solid fa-truck-fast"></i> Mi Encarguito</span>
+          <span class="inline-flex items-center gap-2 bg-sky-700 text-white rounded-full px-4 py-2 text-sm font-medium shadow-sm mx-1.5"><i class="fa-solid fa-film"></i> What To Watch</span>
+          <!-- set B (duplicate) -->
+          <span class="inline-flex items-center gap-2 bg-indigo-600 text-white rounded-full px-4 py-2 text-sm font-medium shadow-sm mx-1.5"><i class="fa-solid fa-handshake"></i> PartGram</span>
+          <span class="inline-flex items-center gap-2 bg-orange-500 text-white rounded-full px-4 py-2 text-sm font-medium shadow-sm mx-1.5"><i class="fa-solid fa-store"></i> MiTienda · Rappi</span>
+          <span class="inline-flex items-center gap-2 bg-blue-600 text-white rounded-full px-4 py-2 text-sm font-medium shadow-sm mx-1.5"><i class="fa-solid fa-file-invoice"></i> Factu</span>
+          <span class="inline-flex items-center gap-2 bg-emerald-600 text-white rounded-full px-4 py-2 text-sm font-medium shadow-sm mx-1.5"><i class="fa-solid fa-cart-shopping"></i> YaEsta</span>
+          <span class="inline-flex items-center gap-2 bg-purple-600 text-white rounded-full px-4 py-2 text-sm font-medium shadow-sm mx-1.5"><i class="fa-solid fa-cash-register"></i> CajaSmart</span>
+          <span class="inline-flex items-center gap-2 bg-red-800 text-white rounded-full px-4 py-2 text-sm font-medium shadow-sm mx-1.5"><i class="fa-solid fa-fire"></i> Infernal Retribution</span>
+          <span class="inline-flex items-center gap-2 bg-cyan-600 text-white rounded-full px-4 py-2 text-sm font-medium shadow-sm mx-1.5"><i class="fa-solid fa-seedling"></i> PlantScanner</span>
+          <span class="inline-flex items-center gap-2 bg-amber-600 text-white rounded-full px-4 py-2 text-sm font-medium shadow-sm mx-1.5"><i class="fa-solid fa-mug-hot"></i> Coffee Cashier</span>
+          <span class="inline-flex items-center gap-2 bg-gray-700 text-white rounded-full px-4 py-2 text-sm font-medium shadow-sm mx-1.5"><i class="fa-solid fa-truck-fast"></i> Mi Encarguito</span>
+          <span class="inline-flex items-center gap-2 bg-sky-700 text-white rounded-full px-4 py-2 text-sm font-medium shadow-sm mx-1.5"><i class="fa-solid fa-film"></i> What To Watch</span>
+        </div>
+      </div>
+    </div>
+
   </section>
 
-  <!-- Work Cases -->
-  <section id="workCases" class="anchor-offset bg-gray-50 py-16 sm:py-24">
+
+  <!-- ══════════════════════════════════════════
+       TECH STACK
+  ══════════════════════════════════════════ -->
+  <section id="stack" class="anchor-offset bg-gray-900 py-16 sm:py-24 text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h3 class="text-2xl sm:text-3xl font-bold text-center mb-10 will-animate">My Work Cases</h3>
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 will-animate">
-        <!-- Card -->
-        <article class="group bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 overflow-hidden transition hover:shadow-lg hover:-translate-y-0.5">
-          <img src="MiTienda.png" alt="MiTienda screenshot" loading="lazy" class="w-full h-48 object-cover">
+      <h2 class="text-2xl sm:text-3xl font-bold text-center mb-2 will-animate">Tech Stack</h2>
+      <p class="text-center text-gray-400 mb-12 will-animate">Tools and technologies I ship production code with</p>
+
+      <div class="space-y-10">
+
+        <div class="will-animate">
+          <p class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">Frontend</p>
+          <div class="flex flex-wrap gap-3">
+            <span class="tech-badge inline-flex items-center gap-2 bg-red-500/10   text-red-400   border border-red-500/20   rounded-xl px-4 py-2 text-sm font-medium"><i class="fa-brands fa-angular"></i> Angular</span>
+            <span class="tech-badge inline-flex items-center gap-2 bg-cyan-500/10  text-cyan-400  border border-cyan-500/20  rounded-xl px-4 py-2 text-sm font-medium"><i class="fa-brands fa-react"></i> React</span>
+            <span class="tech-badge inline-flex items-center gap-2 bg-cyan-500/10  text-cyan-400  border border-cyan-500/20  rounded-xl px-4 py-2 text-sm font-medium"><i class="fa-brands fa-react"></i> React Native</span>
+            <span class="tech-badge inline-flex items-center gap-2 bg-blue-500/10  text-blue-400  border border-blue-500/20  rounded-xl px-4 py-2 text-sm font-medium"><i class="fa-brands fa-js"></i> TypeScript</span>
+            <span class="tech-badge inline-flex items-center gap-2 bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 rounded-xl px-4 py-2 text-sm font-medium"><i class="fa-brands fa-js"></i> JavaScript</span>
+            <span class="tech-badge inline-flex items-center gap-2 bg-teal-500/10  text-teal-400  border border-teal-500/20  rounded-xl px-4 py-2 text-sm font-medium"><i class="fa-solid fa-wind"></i> Tailwind CSS</span>
+            <span class="tech-badge inline-flex items-center gap-2 bg-purple-500/10 text-purple-400 border border-purple-500/20 rounded-xl px-4 py-2 text-sm font-medium"><i class="fa-solid fa-mobile-screen"></i> Expo</span>
+          </div>
+        </div>
+
+        <div class="will-animate">
+          <p class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">Backend &amp; Infrastructure</p>
+          <div class="flex flex-wrap gap-3">
+            <span class="tech-badge inline-flex items-center gap-2 bg-green-500/10  text-green-400  border border-green-500/20  rounded-xl px-4 py-2 text-sm font-medium"><i class="fa-brands fa-node-js"></i> Node.js</span>
+            <span class="tech-badge inline-flex items-center gap-2 bg-gray-500/10   text-gray-300  border border-gray-500/20   rounded-xl px-4 py-2 text-sm font-medium"><i class="fa-solid fa-server"></i> Express</span>
+            <span class="tech-badge inline-flex items-center gap-2 bg-pink-500/10   text-pink-400  border border-pink-500/20   rounded-xl px-4 py-2 text-sm font-medium"><i class="fa-solid fa-diagram-project"></i> GraphQL</span>
+            <span class="tech-badge inline-flex items-center gap-2 bg-green-500/10  text-green-400  border border-green-500/20  rounded-xl px-4 py-2 text-sm font-medium"><i class="fa-solid fa-leaf"></i> MongoDB</span>
+            <span class="tech-badge inline-flex items-center gap-2 bg-orange-500/10 text-orange-400 border border-orange-500/20 rounded-xl px-4 py-2 text-sm font-medium"><i class="fa-brands fa-aws"></i> AWS</span>
+            <span class="tech-badge inline-flex items-center gap-2 bg-sky-500/10    text-sky-400   border border-sky-500/20    rounded-xl px-4 py-2 text-sm font-medium"><i class="fa-brands fa-docker"></i> Docker</span>
+            <span class="tech-badge inline-flex items-center gap-2 bg-violet-500/10 text-violet-400 border border-violet-500/20 rounded-xl px-4 py-2 text-sm font-medium"><i class="fa-solid fa-database"></i> PostgreSQL</span>
+          </div>
+        </div>
+
+        <div class="will-animate">
+          <p class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">AI &amp; Tools</p>
+          <div class="flex flex-wrap gap-3">
+            <span class="tech-badge inline-flex items-center gap-2 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 rounded-xl px-4 py-2 text-sm font-medium"><i class="fa-brands fa-github"></i> Git / GitHub</span>
+            <span class="tech-badge inline-flex items-center gap-2 bg-blue-500/10   text-blue-400  border border-blue-500/20   rounded-xl px-4 py-2 text-sm font-medium"><i class="fa-solid fa-list-check"></i> Jira / Linear</span>
+            <span class="tech-badge inline-flex items-center gap-2 bg-purple-500/10 text-purple-400 border border-purple-500/20 rounded-xl px-4 py-2 text-sm font-medium"><i class="fa-solid fa-pen-ruler"></i> Figma</span>
+            <span class="tech-badge inline-flex items-center gap-2 bg-orange-500/10 text-orange-400 border border-orange-500/20 rounded-xl px-4 py-2 text-sm font-medium"><i class="fa-solid fa-infinity"></i> CI / CD</span>
+            <span class="tech-badge inline-flex items-center gap-2 bg-cyan-500/10   text-cyan-400  border border-cyan-500/20   rounded-xl px-4 py-2 text-sm font-medium"><i class="fa-solid fa-brain"></i> Claude AI / OpenAI</span>
+            <span class="tech-badge inline-flex items-center gap-2 bg-blue-500/10   text-blue-400  border border-blue-500/20   rounded-xl px-4 py-2 text-sm font-medium"><i class="fa-solid fa-cloud"></i> Azure Cognitive</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════
+       WORK CASES
+  ══════════════════════════════════════════ -->
+  <section id="workCases" class="anchor-offset py-16 sm:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl sm:text-3xl font-bold text-center mb-2 will-animate">Work Cases</h2>
+      <p class="text-center text-gray-500 mb-10 will-animate">Professional projects I've built and shipped</p>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <article class="card-hover bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 overflow-hidden will-animate stagger-1">
+          <div class="relative">
+            <img src="MiTienda.png" alt="MiTienda" loading="lazy" class="w-full h-48 object-cover">
+            <span class="absolute top-3 left-3 bg-orange-500 text-white text-xs font-semibold px-2.5 py-1 rounded-full">Rappi</span>
+          </div>
           <div class="p-6">
-            <h4 class="text-lg font-semibold">MiTienda</h4>
-            <p class="mt-2 text-sm text-gray-600">Front‑end feature development, performance tuning and refactors across Ads & Sponsorships to drive engagement and sales.</p>
-            <a href="https://mitienda.rappi.com.ec/" target="_blank" class="mt-4 inline-flex items-center gap-2 text-blue-600 hover:underline">
-              View <i class="fas fa-external-link-alt text-xs"></i>
+            <h3 class="text-lg font-semibold">MiTienda</h3>
+            <p class="mt-2 text-sm text-gray-600 leading-relaxed">Front‑end feature development, performance tuning and refactors across Ads &amp; Sponsorships to drive engagement and sales.</p>
+            <a href="https://mitienda.rappi.com.ec/" target="_blank" rel="noopener" class="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-indigo-600 hover:underline">
+              View <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
             </a>
           </div>
         </article>
 
-        <article class="group bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 overflow-hidden transition hover:shadow-lg hover:-translate-y-0.5">
-          <img src="factulanding.png" alt="Factu screenshot" loading="lazy" class="w-full h-48 object-cover">
+        <article class="card-hover bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 overflow-hidden will-animate stagger-2">
+          <div class="relative">
+            <img src="factulanding.png" alt="Factu" loading="lazy" class="w-full h-48 object-cover">
+            <span class="absolute top-3 left-3 bg-blue-600 text-white text-xs font-semibold px-2.5 py-1 rounded-full">Factu EC</span>
+          </div>
           <div class="p-6">
-            <h4 class="text-lg font-semibold">Factu</h4>
-            <p class="mt-2 text-sm text-gray-600">Project Manager & Developer. Led billing flow, UI/UX, roadmap and delivery aligned to business outcomes.</p>
-            <a href="https://factu.com.ec/" target="_blank" class="mt-4 inline-flex items-center gap-2 text-blue-600 hover:underline">View <i class="fas fa-external-link-alt text-xs"></i></a>
+            <h3 class="text-lg font-semibold">Factu</h3>
+            <p class="mt-2 text-sm text-gray-600 leading-relaxed">Project Manager &amp; Developer. Led billing flow, UI/UX, roadmap and delivery aligned to business outcomes.</p>
+            <a href="https://factu.com.ec/" target="_blank" rel="noopener" class="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-indigo-600 hover:underline">
+              View <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+            </a>
           </div>
         </article>
 
-        <article class="group bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 overflow-hidden transition hover:shadow-lg hover:-translate-y-0.5">
-          <img src="logo_yaesta.png" alt="YaEsta logo" loading="lazy" class="w-full h-48 object-contain p-6 bg-gray-50">
+        <article class="card-hover bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 overflow-hidden will-animate stagger-3">
+          <div class="relative h-48 bg-gray-50 flex items-center justify-center p-6">
+            <img src="logo_yaesta.png" alt="YaEsta" loading="lazy" class="max-h-full w-auto object-contain">
+            <span class="absolute top-3 left-3 bg-emerald-600 text-white text-xs font-semibold px-2.5 py-1 rounded-full">YaEsta</span>
+          </div>
           <div class="p-6">
-            <h4 class="text-lg font-semibold">YaEsta.com</h4>
-            <p class="mt-2 text-sm text-gray-600">E‑commerce UI development. Responsive experiences to improve conversion; social creatives to boost traffic.</p>
-            <a href="https://www.yaesta.com/" target="_blank" class="mt-4 inline-flex items-center gap-2 text-blue-600 hover:underline">View <i class="fas fa-external-link-alt text-xs"></i></a>
+            <h3 class="text-lg font-semibold">YaEsta.com</h3>
+            <p class="mt-2 text-sm text-gray-600 leading-relaxed">E‑commerce UI development. Responsive experiences to improve conversion; social creatives to boost traffic.</p>
+            <a href="https://www.yaesta.com/" target="_blank" rel="noopener" class="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-indigo-600 hover:underline">
+              View <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+            </a>
           </div>
         </article>
 
-        <article class="group bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 overflow-hidden transition hover:shadow-lg hover:-translate-y-0.5">
-          <img src="miEncarguito.png" alt="Mi Encarguito screenshot" loading="lazy" class="w-full h-48 object-cover">
+        <article class="card-hover bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 overflow-hidden will-animate stagger-4">
+          <div class="relative">
+            <img src="miEncarguito.png" alt="Mi Encarguito" loading="lazy" class="w-full h-48 object-cover">
+            <span class="absolute top-3 left-3 bg-purple-600 text-white text-xs font-semibold px-2.5 py-1 rounded-full">Freelance</span>
+          </div>
           <div class="p-6">
-            <h4 class="text-lg font-semibold">Mi Encarguito – Encomiendas</h4>
-            <p class="mt-2 text-sm text-gray-600">Courier platform UI with responsive, performant pages to manage orders and real‑time tracking.</p>
-            <a href="https://encomiendas.miencarguito.com/" target="_blank" class="mt-4 inline-flex items-center gap-2 text-blue-600 hover:underline">View <i class="fas fa-external-link-alt text-xs"></i></a>
+            <h3 class="text-lg font-semibold">Mi Encarguito – Encomiendas</h3>
+            <p class="mt-2 text-sm text-gray-600 leading-relaxed">Courier platform UI with responsive, performant pages to manage orders and real‑time tracking.</p>
+            <a href="https://encomiendas.miencarguito.com/" target="_blank" rel="noopener" class="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-indigo-600 hover:underline">
+              View <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+            </a>
           </div>
         </article>
 
-        <article class="group bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 overflow-hidden transition hover:shadow-lg hover:-translate-y-0.5">
-          <img src="fzSeguros.png" alt="FZ Seguros screenshot" loading="lazy" class="w-full h-48 object-cover">
+        <article class="card-hover bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 overflow-hidden will-animate stagger-5">
+          <div class="relative">
+            <img src="fzSeguros.png" alt="FZ Seguros" loading="lazy" class="w-full h-48 object-cover">
+            <span class="absolute top-3 left-3 bg-indigo-600 text-white text-xs font-semibold px-2.5 py-1 rounded-full">Freelance</span>
+          </div>
           <div class="p-6">
-            <h4 class="text-lg font-semibold">FZ Seguros – Website</h4>
-            <p class="mt-2 text-sm text-gray-600">Clean, accessible site to inform users and collect leads; fully responsive and mobile‑first.</p>
-            <a href="https://fzseguros-aps.com/" target="_blank" class="mt-4 inline-flex items-center gap-2 text-blue-600 hover:underline">View <i class="fas fa-external-link-alt text-xs"></i></a>
+            <h3 class="text-lg font-semibold">FZ Seguros – Website</h3>
+            <p class="mt-2 text-sm text-gray-600 leading-relaxed">Clean, accessible site to inform users and collect leads; fully responsive and mobile‑first.</p>
+            <a href="https://fzseguros-aps.com/" target="_blank" rel="noopener" class="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-indigo-600 hover:underline">
+              View <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+            </a>
           </div>
         </article>
+
       </div>
     </div>
   </section>
 
-  <!-- Projects -->
-  <section id="projects" class="anchor-offset py-16 sm:py-24">
+
+  <!-- ══════════════════════════════════════════
+       PROJECTS
+  ══════════════════════════════════════════ -->
+  <section id="projects" class="anchor-offset bg-gray-50 py-16 sm:py-24">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h3 class="text-2xl sm:text-3xl font-bold text-center mb-10 will-animate">My Projects</h3>
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 will-animate">
-        <article class="group bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 overflow-hidden transition hover:shadow-lg hover:-translate-y-0.5">
-          <img src="WhatTowatch.png" alt="What To Watch app" loading="lazy" class="w-full h-48 object-cover">
+      <h2 class="text-2xl sm:text-3xl font-bold text-center mb-2 will-animate">Personal Projects</h2>
+      <p class="text-center text-gray-500 mb-10 will-animate">Built out of curiosity, passion, and a need to ship things</p>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- PartGram ── LIVE -->
+        <article class="card-hover bg-white rounded-2xl shadow-sm ring-2 ring-green-300 overflow-hidden will-animate stagger-1">
+          <div class="relative bg-gradient-to-br from-green-500 to-emerald-700 h-48 flex flex-col items-center justify-center text-white gap-3">
+            <i class="fa-solid fa-handshake text-5xl opacity-85"></i>
+            <p class="font-bold text-xl tracking-tight">PartGram</p>
+            <span class="absolute top-3 right-3 bg-white text-green-700 text-xs font-bold px-2.5 py-1 rounded-full">LIVE</span>
+          </div>
           <div class="p-6">
-            <h4 class="text-lg font-semibold">What To Watch</h4>
-            <p class="mt-2 text-sm text-gray-600">React + Tailwind + Vite app to discover movies by preferences, with search and clean UI.</p>
-            <a href="https://what-to-watch-apxnnvxec-juanzjcks-projects.vercel.app/" target="_blank" class="mt-4 inline-flex items-center gap-2 text-blue-600 hover:underline">View Project <i class="fas fa-external-link-alt text-xs"></i></a>
+            <h3 class="text-lg font-semibold">PartGram</h3>
+            <p class="mt-2 text-sm text-gray-600 leading-relaxed">Marketplace connecting content creators (Instagram &amp; TikTok) with brands. Creators earn based on views; brands get authentic reach. Launched June 2025.</p>
+            <div class="mt-3 flex flex-wrap gap-2 mb-4">
+              <span class="text-xs bg-green-50 text-green-700 rounded-full px-2.5 py-1">React Native</span>
+              <span class="text-xs bg-green-50 text-green-700 rounded-full px-2.5 py-1">Expo</span>
+              <span class="text-xs bg-green-50 text-green-700 rounded-full px-2.5 py-1">Node.js</span>
+              <span class="text-xs bg-green-50 text-green-700 rounded-full px-2.5 py-1">Founding Engineer</span>
+            </div>
+            <a href="https://partgram.app/" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-sm font-medium text-green-700 hover:underline">
+              Visit App <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+            </a>
           </div>
         </article>
 
-        <article class="group bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 overflow-hidden transition hover:shadow-lg hover:-translate-y-0.5">
-          <img src="PlanScanner.png" alt="PlantScanner app" loading="lazy" class="w-full h-48 object-cover">
+        <!-- CajaSmart ── NEW -->
+        <article class="card-hover bg-white rounded-2xl shadow-sm ring-2 ring-indigo-200 overflow-hidden will-animate stagger-2">
+          <div class="relative bg-gradient-to-br from-indigo-600 to-purple-700 h-48 flex flex-col items-center justify-center text-white gap-3">
+            <i class="fa-solid fa-cash-register text-5xl opacity-80"></i>
+            <p class="font-bold text-lg tracking-tight">CajaSmart</p>
+            <span class="absolute top-3 right-3 bg-yellow-400 text-yellow-900 text-xs font-bold px-2.5 py-1 rounded-full">NEW</span>
+          </div>
           <div class="p-6">
-            <h4 class="text-lg font-semibold">PlantScanner</h4>
-            <p class="mt-2 text-sm text-gray-600">Azure Cognitive Services + React/React Native + Node GraphQL + MongoDB for plant identification.</p>
-            <div class="mt-3 space-x-3">
-              <a href="https://github.com/juanzjck/PlantScanner-admin" target="_blank" class="text-blue-600 hover:underline">Front repo</a>
-              <a href="https://github.com/juanzjck/PlantScanner-back" target="_blank" class="text-blue-600 hover:underline">Back repo</a>
-              <a href="https://github.com/juanzjck/PlantScanner-admin" target="_blank" class="text-blue-600 hover:underline">Mobile repo</a>
+            <h3 class="text-lg font-semibold">CajaSmart</h3>
+            <p class="mt-2 text-sm text-gray-600 leading-relaxed">Point-of-sale software for restaurants and cafés. Built for speed, reliability, and ease of use by non-technical staff.</p>
+            <div class="mt-3 flex flex-wrap gap-2">
+              <span class="text-xs bg-indigo-50 text-indigo-700 rounded-full px-2.5 py-1">React Native</span>
+              <span class="text-xs bg-indigo-50 text-indigo-700 rounded-full px-2.5 py-1">Node.js</span>
+              <span class="text-xs bg-indigo-50 text-indigo-700 rounded-full px-2.5 py-1">MongoDB</span>
             </div>
           </div>
         </article>
 
-        <article class="group bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 overflow-hidden transition hover:shadow-lg hover:-translate-y-0.5">
-          <img src="CoffeCashier.png" alt="Coffee Cashier app" loading="lazy" class="w-full h-48 object-cover">
+        <!-- Infernal Retribution ── NEW -->
+        <article class="card-hover bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 overflow-hidden will-animate stagger-2">
+          <div class="relative bg-gradient-to-br from-red-900 to-orange-800 h-48 flex flex-col items-center justify-center text-white gap-3">
+            <i class="fa-solid fa-fire text-5xl opacity-80"></i>
+            <p class="font-bold text-lg tracking-tight">Infernal Retribution</p>
+            <span class="absolute top-3 right-3 bg-orange-400 text-orange-900 text-xs font-bold px-2.5 py-1 rounded-full">NEW</span>
+          </div>
           <div class="p-6">
-            <h4 class="text-lg font-semibold">Coffee Cashier</h4>
-            <p class="mt-2 text-sm text-gray-600">Order management UI for cafés, optimized for speed and responsiveness across devices.</p>
-            <a href="https://coffee-casher-cafe-zular.vercel.app/" target="_blank" class="mt-4 inline-flex items-center gap-2 text-blue-600 hover:underline">View Project <i class="fas fa-external-link-alt text-xs"></i></a>
+            <h3 class="text-lg font-semibold">Infernal Retribution</h3>
+            <p class="mt-2 text-sm text-gray-600 leading-relaxed">Roguelike game inspired by Dante's Divine Comedy. Exploring procedural generation, game mechanics, and interactive storytelling.</p>
+            <div class="mt-3 flex flex-wrap gap-2">
+              <span class="text-xs bg-red-50 text-red-700 rounded-full px-2.5 py-1">Game Dev</span>
+              <span class="text-xs bg-red-50 text-red-700 rounded-full px-2.5 py-1">Roguelike</span>
+            </div>
           </div>
         </article>
 
-        <article class="group bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 overflow-hidden transition hover:shadow-lg hover:-translate-y-0.5">
-          <img src="product-manager.png" alt="Financial Product Manager app" loading="lazy" class="w-full h-48 object-cover">
+        <article class="card-hover bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 overflow-hidden will-animate stagger-3">
+          <img src="WhatTowatch.png" alt="What To Watch" loading="lazy" class="w-full h-48 object-cover">
           <div class="p-6">
-            <h4 class="text-lg font-semibold">Products management</h4>
-            <p class="mt-2 text-sm text-gray-600">React interface to add/edit/list financial products (loans, cards, investments) with real‑time updates.</p>
-            <a href="https://github.com/juanzjck/product-management" target="_blank" class="mt-4 inline-flex items-center gap-2 text-blue-600 hover:underline">View Project <i class="fas fa-external-link-alt text-xs"></i></a>
+            <h3 class="text-lg font-semibold">What To Watch</h3>
+            <p class="mt-2 text-sm text-gray-600 leading-relaxed">React + Tailwind + Vite app to discover movies by preferences, with search and a clean UI.</p>
+            <div class="mt-3 flex flex-wrap gap-2 mb-3">
+              <span class="text-xs bg-cyan-50 text-cyan-700 rounded-full px-2.5 py-1">React</span>
+              <span class="text-xs bg-cyan-50 text-cyan-700 rounded-full px-2.5 py-1">Tailwind</span>
+              <span class="text-xs bg-cyan-50 text-cyan-700 rounded-full px-2.5 py-1">Vite</span>
+            </div>
+            <a href="https://what-to-watch-apxnnvxec-juanzjcks-projects.vercel.app/" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-sm font-medium text-indigo-600 hover:underline">View Project <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i></a>
           </div>
         </article>
+
+        <article class="card-hover bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 overflow-hidden will-animate stagger-4">
+          <img src="PlanScanner.png" alt="PlantScanner" loading="lazy" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h3 class="text-lg font-semibold">PlantScanner</h3>
+            <p class="mt-2 text-sm text-gray-600 leading-relaxed">Azure Cognitive Services + React/React Native + Node GraphQL + MongoDB for plant identification.</p>
+            <div class="mt-3 flex flex-wrap gap-2 mb-3">
+              <span class="text-xs bg-blue-50 text-blue-700 rounded-full px-2.5 py-1">Azure AI</span>
+              <span class="text-xs bg-blue-50 text-blue-700 rounded-full px-2.5 py-1">GraphQL</span>
+              <span class="text-xs bg-blue-50 text-blue-700 rounded-full px-2.5 py-1">React Native</span>
+            </div>
+            <div class="flex flex-wrap gap-3 text-sm font-medium text-indigo-600">
+              <a href="https://github.com/juanzjck/PlantScanner-admin" target="_blank" rel="noopener" class="hover:underline">Front</a>
+              <a href="https://github.com/juanzjck/PlantScanner-back" target="_blank" rel="noopener" class="hover:underline">Back</a>
+              <a href="https://github.com/juanzjck/PlantScanner-admin" target="_blank" rel="noopener" class="hover:underline">Mobile</a>
+            </div>
+          </div>
+        </article>
+    
+        <article class="card-hover bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 overflow-hidden will-animate stagger-1">
+          <img src="product-manager.png" alt="Financial Product Manager" loading="lazy" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h3 class="text-lg font-semibold">Products Management</h3>
+            <p class="mt-2 text-sm text-gray-600 leading-relaxed">React interface to add/edit/list financial products (loans, cards, investments) with real‑time updates.</p>
+            <div class="mt-3 flex flex-wrap gap-2 mb-3">
+              <span class="text-xs bg-green-50 text-green-700 rounded-full px-2.5 py-1">React</span>
+              <span class="text-xs bg-green-50 text-green-700 rounded-full px-2.5 py-1">TypeScript</span>
+            </div>
+            <a href="https://github.com/juanzjck/product-management" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-sm font-medium text-indigo-600 hover:underline">View Project <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i></a>
+          </div>
+        </article>
+
       </div>
     </div>
   </section>
 
-  <!-- Contact -->
-  <section id="contact" class="anchor-offset max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
-    <h3 class="text-2xl sm:text-3xl font-bold text-center mb-8 will-animate">Contact Me</h3>
-    <div class="flex justify-center gap-8 text-3xl will-animate">
-      <a href="https://github.com/juanzjck" target="_blank" class="text-gray-800 hover:text-blue-600 transition-colors" aria-label="GitHub"><i class="fab fa-github"></i></a>
-      <a href="https://www.linkedin.com/in/juansalazardev" target="_blank" class="text-gray-800 hover:text-blue-600 transition-colors" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-      <a href="mailto:juanzjck1996@gmail.com" class="text-gray-800 hover:text-blue-600 transition-colors" aria-label="Email"><i class="fas fa-envelope"></i></a>
+
+  <!-- ══════════════════════════════════════════
+       EDUCATION
+  ══════════════════════════════════════════ -->
+  <section id="education" class="anchor-offset py-16 sm:py-24">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl sm:text-3xl font-bold text-center mb-2 will-animate">Education</h2>
+      <p class="text-center text-gray-500 mb-10 will-animate">Academic background and continuous learning</p>
+
+      <div class="space-y-4">
+
+        <!-- Touro ── Current -->
+        <div class="card-hover bg-white rounded-2xl shadow-sm ring-2 ring-indigo-200 p-6 flex gap-5 items-start will-animate">
+          <div class="h-12 w-12 rounded-xl bg-indigo-600 grid place-items-center text-white text-xl flex-shrink-0 shadow-md">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-start justify-between gap-4 flex-wrap">
+              <div>
+                <h3 class="font-semibold text-gray-900">Touro University – Graduate School of Technology</h3>
+                <p class="text-sm text-gray-600 mt-0.5">Master's Program · New York, NY</p>
+              </div>
+              <span class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full px-3 py-1 text-xs font-semibold flex-shrink-0">
+                <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Current · 2025–2027
+              </span>
+            </div>
+            <p class="mt-2 text-sm text-gray-500">Graduate studies in Technology. Partnering with major corporations including Citigroup for mentorship and applied research projects.</p>
+          </div>
+        </div>
+
+        <!-- Undergraduate -->
+        <div class="card-hover bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 p-6 flex gap-5 items-start will-animate">
+          <div class="h-12 w-12 rounded-xl bg-blue-100 grid place-items-center text-blue-600 text-xl flex-shrink-0">
+            <i class="fa-solid fa-building-columns"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-start justify-between gap-4 flex-wrap">
+              <div>
+                <h3 class="font-semibold text-gray-900">Undergraduate Degree</h3>
+                <p class="text-sm text-gray-600 mt-0.5">Software Engineering / Computer Science</p>
+              </div>
+              <span class="text-xs text-gray-400 flex-shrink-0 mt-1">2016–2022</span>
+            </div>
+            <p class="mt-2 text-sm text-gray-500">Foundation in algorithms, systems design, databases, and software engineering principles.</p>
+          </div>
+        </div>
+
+        <!-- Certifications -->
+        <div class="card-hover bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 p-6 flex gap-5 items-start will-animate">
+          <div class="h-12 w-12 rounded-xl bg-amber-100 grid place-items-center text-amber-600 text-xl flex-shrink-0">
+            <i class="fa-solid fa-certificate"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-semibold text-gray-900">Certifications</h3>
+            <p class="text-sm text-gray-600 mt-0.5">Platzi · Coursera · 2016–present</p>
+            <div class="mt-3 flex flex-wrap gap-2">
+              <span class="text-xs bg-gray-100 text-gray-700 rounded-full px-3 py-1">React</span>
+              <span class="text-xs bg-gray-100 text-gray-700 rounded-full px-3 py-1">React Native</span>
+              <span class="text-xs bg-gray-100 text-gray-700 rounded-full px-3 py-1">Docker</span>
+              <span class="text-xs bg-gray-100 text-gray-700 rounded-full px-3 py-1">GraphQL</span>
+              <span class="text-xs bg-gray-100 text-gray-700 rounded-full px-3 py-1">AWS</span>
+              <span class="text-xs bg-gray-100 text-gray-700 rounded-full px-3 py-1">Game Design</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
   </section>
 
+
+  <!-- ══════════════════════════════════════════
+       BLOG
+  ══════════════════════════════════════════ -->
+  <section id="blog" class="anchor-offset bg-gray-50 py-16 sm:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl sm:text-3xl font-bold text-center mb-2 will-animate">Blog</h2>
+      <p class="text-center text-gray-500 mb-10 will-animate">Notes, thoughts, and technical deep-dives on Medium</p>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <article class="card-hover bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 p-6 flex flex-col will-animate stagger-1">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-xs bg-violet-50 text-violet-700 rounded-full px-2.5 py-1 font-medium">AI</span>
+            <span class="text-xs text-gray-400 ml-auto">Sep 11, 2025</span>
+          </div>
+          <h3 class="text-base font-semibold text-gray-900 leading-snug">AI's use cases that we don't see often</h3>
+          <p class="mt-2 text-sm text-gray-500 leading-relaxed flex-1">AI is no longer the future — it is the present. In recent years, we have seen a boom in generative AI, from LLMs to video…</p>
+          <a href="https://jpdev8.medium.com/ais-use-cases-that-we-don-t-see-often-39ded5fec5af" target="_blank" rel="noopener"
+             class="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-indigo-600 hover:underline">
+            Read on Medium <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+          </a>
+        </article>
+
+        <article class="card-hover bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 p-6 flex flex-col will-animate stagger-2">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-xs bg-yellow-50 text-yellow-700 rounded-full px-2.5 py-1 font-medium">JavaScript</span>
+            <span class="text-xs text-gray-400 ml-auto">Jun 6, 2022</span>
+          </div>
+          <h3 class="text-base font-semibold text-gray-900 leading-snug">Javascript Scope</h3>
+          <p class="mt-2 text-sm text-gray-500 leading-relaxed flex-1">The scope represents a limitation of the variable in the context of executed code — in other words, the accessibility of the variable.</p>
+          <a href="https://jpdev8.medium.com/javascript-scope-e80aef5a100a" target="_blank" rel="noopener"
+             class="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-indigo-600 hover:underline">
+            Read on Medium <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+          </a>
+        </article>
+
+        <article class="card-hover bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 p-6 flex flex-col will-animate stagger-3">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-xs bg-blue-50 text-blue-700 rounded-full px-2.5 py-1 font-medium">Web Storage</span>
+            <span class="text-xs text-gray-400 ml-auto">May 1, 2022</span>
+          </div>
+          <h3 class="text-base font-semibold text-gray-900 leading-snug">Local Storage vs Session Storage vs Cookies vs Redux Store</h3>
+          <p class="mt-2 text-sm text-gray-500 leading-relaxed flex-1">Understand what these different kinds of storage are and how they work — and when to choose each one.</p>
+          <a href="https://jpdev8.medium.com/local-storage-vs-session-storage-vs-cookies-vs-redux-store-1a933440d57d" target="_blank" rel="noopener"
+             class="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-indigo-600 hover:underline">
+            Read on Medium <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+          </a>
+        </article>
+
+        <article class="card-hover bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 p-6 flex flex-col will-animate stagger-4">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-xs bg-cyan-50 text-cyan-700 rounded-full px-2.5 py-1 font-medium">React Native</span>
+            <span class="text-xs text-gray-400 ml-auto">May 19, 2021</span>
+          </div>
+          <h3 class="text-base font-semibold text-gray-900 leading-snug">How to create a Unity library for React Native (Android)</h3>
+          <p class="mt-2 text-sm text-gray-500 leading-relaxed flex-1">Want to create an AR module for your React Native app? If you're having problems making it, this step-by-step guide is for you.</p>
+          <a href="https://jpdev8.medium.com/how-to-create-a-unity-library-for-react-native-android-2f6230d6cdcd" target="_blank" rel="noopener"
+             class="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-indigo-600 hover:underline">
+            Read on Medium <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+          </a>
+        </article>
+
+        <article class="card-hover bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 p-6 flex flex-col will-animate stagger-5">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-xs bg-green-50 text-green-700 rounded-full px-2.5 py-1 font-medium">Python</span>
+            <span class="text-xs text-gray-400 ml-auto">Apr 17, 2021</span>
+          </div>
+          <h3 class="text-base font-semibold text-gray-900 leading-snug">Python, ¿para niños?</h3>
+          <p class="mt-2 text-sm text-gray-500 leading-relaxed flex-1">¿Un niño de 6 años podría aprender un lenguaje como Python? Explorando el potencial de enseñar programación desde temprana edad.</p>
+          <a href="https://jpdev8.medium.com/python-para-ni%C3%B1os-9edea4a75f46" target="_blank" rel="noopener"
+             class="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-indigo-600 hover:underline">
+            Read on Medium <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+          </a>
+        </article>
+
+        <article class="card-hover bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 p-6 flex flex-col will-animate stagger-1">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-xs bg-orange-50 text-orange-700 rounded-full px-2.5 py-1 font-medium">Git</span>
+            <span class="text-xs text-gray-400 ml-auto">Dec 19, 2020</span>
+          </div>
+          <h3 class="text-base font-semibold text-gray-900 leading-snug">5 Razones para usar y aprender Git</h3>
+          <p class="mt-2 text-sm text-gray-500 leading-relaxed flex-1">Si estás estudiando en la universidad o eres un desarrollador junior, estas 5 razones te convencerán de aprender Git desde hoy.</p>
+          <a href="https://jpdev8.medium.com/5-razones-para-usar-y-aprender-git-72dc8ddec00a" target="_blank" rel="noopener"
+             class="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-indigo-600 hover:underline">
+            Read on Medium <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+          </a>
+        </article>
+
+      </div>
+
+      <div class="mt-10 text-center will-animate">
+        <a href="https://jpdev8.medium.com/" target="_blank" rel="noopener"
+           class="inline-flex items-center gap-2 border-2 border-gray-300 text-gray-700 px-6 py-3 rounded-full font-semibold hover:border-indigo-400 hover:text-indigo-600 hover:-translate-y-0.5 transition">
+          <i class="fa-brands fa-medium text-lg"></i> View all on Medium
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════
+       CONTACT
+  ══════════════════════════════════════════ -->
+  <section id="contact" class="anchor-offset bg-gray-900 text-white py-16 sm:py-24">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-2xl sm:text-3xl font-bold mb-3 will-animate">Let's Work Together</h2>
+      <p class="text-gray-400 mb-10 will-animate">Whether it's a new product, a tough engineering challenge, or a conversation about what's next — I'm open to it.</p>
+
+      <div class="grid sm:grid-cols-3 gap-4 will-animate">
+        <a href="https://github.com/juanzjck" target="_blank" rel="noopener"
+           class="card-hover flex flex-col items-center gap-3 bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
+          <i class="fa-brands fa-github text-3xl"></i>
+          <span class="text-sm font-semibold">GitHub</span>
+          <span class="text-xs text-gray-400">@juanzjck</span>
+        </a>
+        <a href="https://www.linkedin.com/in/juansalazardev" target="_blank" rel="noopener"
+           class="card-hover flex flex-col items-center gap-3 bg-blue-600/20 border border-blue-500/30 rounded-2xl p-6 hover:bg-blue-600/30 transition-colors">
+          <i class="fa-brands fa-linkedin text-3xl text-blue-400"></i>
+          <span class="text-sm font-semibold">LinkedIn</span>
+          <span class="text-xs text-gray-400">juansalazardev</span>
+        </a>
+        <a href="mailto:juanzjck1996@gmail.com"
+           class="card-hover flex flex-col items-center gap-3 bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
+          <i class="fa-solid fa-envelope text-3xl"></i>
+          <span class="text-sm font-semibold">Email</span>
+          <span class="text-xs text-gray-400">juanzjck1996@gmail.com</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+
   <!-- Footer -->
-  <footer class="bg-gray-900 text-white py-8">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <p>&copy; <span id="year"></span> Juan Pablo Salazar Zúñiga. All rights reserved.</p>
+  <footer class="bg-gray-950 text-gray-500 py-6">
+    <div class="max-w-7xl mx-auto px-4 text-center text-sm">
+      <p>&copy; <span id="year"></span> Juan Pablo Salazar Zúñiga &nbsp;·&nbsp; Built with HTML, Tailwind &amp; <span class="text-red-400">♥</span></p>
     </div>
   </footer>
 
   <!-- Back to top -->
-  <button id="toTop" class="fixed bottom-6 right-6 h-11 w-11 rounded-full bg-blue-600 text-white shadow-lg grid place-items-center opacity-0 pointer-events-none transition hover:bg-blue-700" aria-label="Back to top">
-    <i class="fas fa-arrow-up"></i>
+  <button id="toTop" aria-label="Back to top"
+          class="fixed bottom-6 right-6 h-11 w-11 rounded-full bg-indigo-600 text-white shadow-lg grid place-items-center opacity-0 pointer-events-none transition-all duration-300 hover:bg-indigo-700 hover:scale-110">
+    <i class="fa-solid fa-arrow-up text-sm"></i>
   </button>
 
+
   <script>
-    // Set year
+    // ─── Year ───────────────────────────────────────
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Mobile menu
-    const btn = document.getElementById('menuBtn');
-    const menu = document.getElementById('mobileMenu');
-    btn?.addEventListener('click', () => {
-      const open = menu.style.maxHeight && menu.style.maxHeight !== '0px';
-      menu.style.maxHeight = open ? '0px' : menu.scrollHeight + 'px';
+    // ─── Mobile menu ────────────────────────────────
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuBtn?.addEventListener('click', () => {
+      const open = mobileMenu.style.maxHeight && mobileMenu.style.maxHeight !== '0px';
+      mobileMenu.style.maxHeight = open ? '0px' : mobileMenu.scrollHeight + 'px';
     });
+    mobileMenu?.querySelectorAll('a').forEach(a =>
+      a.addEventListener('click', () => { mobileMenu.style.maxHeight = '0px'; })
+    );
 
-    // Close mobile menu on link click
-    menu?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-      menu.style.maxHeight = '0px';
-    }));
+    // ─── Scroll reveal ──────────────────────────────
+    const revealObserver = ('IntersectionObserver' in window)
+      ? new IntersectionObserver((entries) => {
+          entries.forEach(e => {
+            if (!e.isIntersecting) return;
+            const el = e.target;
+            if (el.classList.contains('will-animate-left'))       el.classList.add('animate-left');
+            else if (el.classList.contains('will-animate-right')) el.classList.add('animate-right');
+            else                                                   el.classList.add('animate-in');
+            revealObserver.unobserve(el);
+          });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' })
+      : null;
 
-    // Scroll reveal
-    const io = ('IntersectionObserver' in window) ? new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('animate-in');
-          io.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.12 }) : null;
-
-    document.querySelectorAll('.will-animate').forEach(el => {
-      if (io) io.observe(el); else el.classList.add('animate-in');
-    });
-
-    // Back to top visibility
-    const toTop = document.getElementById('toTop');
-    const toggleTopBtn = () => {
-      if (window.scrollY > 400) {
-        toTop.classList.remove('pointer-events-none');
-        toTop.style.opacity = '1';
-      } else {
-        toTop.classList.add('pointer-events-none');
-        toTop.style.opacity = '0';
+    document.querySelectorAll('.will-animate, .will-animate-left, .will-animate-right').forEach(el => {
+      if (revealObserver) revealObserver.observe(el);
+      else {
+        el.classList.add(
+          el.classList.contains('will-animate-left')  ? 'animate-left'  :
+          el.classList.contains('will-animate-right') ? 'animate-right' : 'animate-in'
+        );
       }
-    };
-    window.addEventListener('scroll', toggleTopBtn, { passive: true });
-    toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    });
 
-    // Header shadow on scroll
-    const header = document.getElementById('siteHeader');
-    let lastY = 0;
+    // ─── Back to top ────────────────────────────────
+    const toTop = document.getElementById('toTop');
     window.addEventListener('scroll', () => {
-      const y = window.scrollY;
-      header.classList.toggle('shadow', y > 4);
-      lastY = y;
+      const show = window.scrollY > 400;
+      toTop.style.opacity = show ? '1' : '0';
+      toTop.classList.toggle('pointer-events-none', !show);
     }, { passive: true });
+    toTop?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    // ─── Header shadow ──────────────────────────────
+    const header = document.getElementById('siteHeader');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('shadow-md', window.scrollY > 4);
+    }, { passive: true });
+
+    // ─── Typewriter ─────────────────────────────────
+    const roles = [
+      'Founding Engineer',
+      'Full-Stack Developer',
+      'React & Angular Expert',
+      'Mobile App Builder',
+      'Product-Minded Engineer',
+    ];
+    let ri = 0, ci = 0, deleting = false;
+    const tw = document.getElementById('typewriter-text');
+
+    function typeStep() {
+      if (!tw) return;
+      const word = roles[ri];
+      if (!deleting) {
+        tw.textContent = word.slice(0, ++ci);
+        if (ci === word.length) { deleting = true; setTimeout(typeStep, 2200); return; }
+        setTimeout(typeStep, 75);
+      } else {
+        tw.textContent = word.slice(0, --ci);
+        if (ci === 0) { deleting = false; ri = (ri + 1) % roles.length; setTimeout(typeStep, 350); return; }
+        setTimeout(typeStep, 38);
+      }
+    }
+    setTimeout(typeStep, 700);
+
+    // ─── Counter animation ──────────────────────────
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const target = parseInt(el.dataset.target, 10);
+        const suffix = target >= 8 ? '+' : '';
+        let current = 0;
+        const step = Math.ceil(target / 25);
+        const timer = setInterval(() => {
+          current = Math.min(current + step, target);
+          el.textContent = current + suffix;
+          if (current >= target) clearInterval(timer);
+        }, 40);
+        counterObserver.unobserve(el);
+      });
+    }, { threshold: 0.6 });
+
+    document.querySelectorAll('.counter').forEach(c => counterObserver.observe(c));
   </script>
 </body>
 </html>
